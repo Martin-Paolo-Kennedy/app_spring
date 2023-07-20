@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="plantilla/UITemplate :: cabecera">
+	
+
+<meta charset="ISO-8859-1">
+<title>Producto</title>
+
+
+</head>
+<body>
+
+	</style>
+	<!--consumir fragmento-->
+	<div th:insert="plantilla/UITemplate :: menu"></div>
+	
+	<div class="container">
+		
+			<h3 class="text-center mt-4">LISTA DE PRODUCTOS</h3>
+			
+			<button type="button" class="btn btn-primary mt-5" data-toggle="modal" data-target="#modalProducto" id="btn-nuevo">
+			 <i class="far fa-file"></i> Nuevo Producto
+			</button>
+			<div class=" mt-2">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+	<table id="tableProductos" class="table table-borderless" style="width:100%">
+        <thead class="menu-table">
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+				<th>Precio</th>
+				<th>Stock</th>
+				<th>Categoria</th>
+				<th></th>
+				<th></th>
+					                
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="data:${listaProducto}">
+				<td th:text="${data.codigo}"></td>
+				<td th:text="${data.descripcion}"></td>
+				<td th:text="${data.pre_pro}"></td>
+				<td th:text="${data.stock}"></td>
+				<td th:text="${data.catagoriaP.des_cat}"></td>
+				<td><a class="btn btn-info btn-editar" data-toggle="modal" data-target="#modalProducto"><i class="far fa-edit"></i></a></td>
+				<td><a class="btn btn-danger btn-eliminar"><i class="far fa-trash-alt"></i></a></td>
+			</tr>  
+            
+        </tbody>
+    </table>
+				
+			</div>
+		
+		
+			<!-- begin #modal-dialog : MODAL MEDICAMENTO-->
+			<div class="modal fade" id="modalProducto" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Producto</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra" action="/producto/grabar">	
+										<div class="container">
+											<div class="row">
+												<div class="form-group col-md-4">
+												    <label for="validationCustomUsername" class="form-label fw-bold">Código</label>
+												    <div class="input-group has-validation">
+												      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+												      <input type="text" class="form-control" name="codigo" id="idCodigo" readonly value="0">
+												    </div>
+												  </div>
+												<div class="form-group has-feedback col-md-12">
+														<label for="exampleInputEmail1"><b>Descripción</b></label><br>
+														<textarea class="form-control" id="idDescripcion" rows="6" name="descripcion" 
+																					   placeholder="Ingresar descripción" style="padding-left: 5px!important;"></textarea>												
+												</div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Stock</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idStock" placeholder="Ingresar stock" name="stock">	
+												</div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Precio</b></label><br>
+													<i class="fas fa-money-check-alt form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idPrecio" placeholder="Ingresar precio" name="precio">														
+												</div>
+											    <div class="form-group has-feedback col-md-6">	
+														<label for="exampleInputEmail1"><b>Categoria</b></label><br>
+												        <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+													    <select class="form-control" id="idCategoria" name="categoria">
+													      <option value=" ">[Seleccione Categoria]</option>
+													      <option th:each="row:${listaCategoria}"
+													      				th:utext="${row.des_cat}"
+													      				th:value="${row.codigo}"
+													      				/>
+													    </select>
+													   
+												 </div> 
+											</div>
+										</div>								
+										<div class="col-md-12 text-center mt-4"> 										
+											<button type="submit" id="Guardar" class="btn btn-primary"><i class="fas fa-save"></i> Registrar</button>
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 																								
+									</form>
+								</div>
+							</div>
+						</div>
+		</div>
+		
+		
+		
+		
+		
+		<!-- FIN Modal MEDICAMENTO-->	
+		<form action="/producto/eliminar" method="post" id="frm-eliminar">
+			<input type="hidden" name="codigo" id="codigo-eliminar"/>
+			
+		</form>
+	
+	</div>
+	
+	<div th:insert="plantilla/UITemplate :: javascript"></div>
+	
+	
+	
+
+	
+	
+
+	
+		<script th:inline="javascript" th:if="${MENSAJE!=null}">
+			let msj;
+			msj=/*[[${MENSAJE}]]*/
+			toastr.success(msj, toastr.options = {
+				"timeOut": "2000",
+				"positionClass " : " toast-top-right ",
+			});
+
+		</script>
+	
+	
+	
+	<script>
+		let codigoTipo=-1;
+		new DataTable('#tableProductos');
+		$('#usr1').on('changeDate show', function(e) {
+		    $('#idRegistra').bootstrapValidator('revalidateField', $('#usr1'));
+		});
+
+	$(document).on("click",".btn-editar",function(){
+		let cod;
+		cod=$(this).parents("tr").find("td")[0].innerHTML;
+		$.get("/producto/buscar?codigo="+cod,function(response){
+			//mostrar en los controles los valores de la response
+			$("#idCodigo").val(response.codigo);
+			$("#idDescripcion").val(response.descripcion);
+			$("#idPrecio").val(response.pre_pro);
+			$("#idStock").val(response.stock);
+			$("#idCategoria").val(response.catagoriaP.codigo);
+			/*codigoTipo=response.categoria.ide_cat;
+			//invocar al evento change del combo idLaboratorio
+			$("#idCategoria").trigger("change");*/
+			console.log(response);
+		})
+		
+	})
+	//asignar evento click al botón con ID "btn-cerrar"
+	$(document).on("click","#btn-cerrar",function(){
+		//resetear el formulario
+		$("#idRegistra").trigger("reset");
+		$("#idCodigo").val(0);
+		//resetear validaciones
+		$("#idRegistra").data("bootstrapValidator").resetForm(true);
+		
+	})
+
+	$(document).on("click",".btn-eliminar",function(){
+		//variable
+		let cod;
+		//obtener el código del medicamento según el botón editar que se pulsó
+		cod=$(this).parents("tr").find("td")[0].innerHTML;
+		$("#codigo-eliminar").val(cod);
+		
+		  alertify.confirm("SISTEMA","Seguro de eliminar!",
+		  function(){//siiiiiiiiiiiiiiiii
+				$("#frm-eliminar").submit();
+		  },
+		  function(){//nooooooooooooooooooooo 
+			alertify.error('Cancelado!')
+		  }).
+		  set('labels', {ok:'Si', cancel:'No'});
+	})
+
+	
+
+	</script>
+	
+	<script type="text/javascript">    
+	    $(document).ready(function(){     
+	
+	        $('#idRegistra').bootstrapValidator({     
+	        	feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	        	 fields:{
+	        		 
+	        		 Nombres: {
+	     	    		selector:'#idNombre',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese nombre'    
+	                        }      
+	                    }    
+	                },   
+	                Descripcion: {
+	     	    		selector:'#idDescripcion',       
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese descripción'    
+	                        },
+	                        regexp: {    
+	                            regexp: /^(\d+|[0-9]+\.\d{1,2})$/,    
+	                            message: 'Solo se permite letras y numeros de 0 a 40 digitos'    
+	                        }, 
+	                    }    
+	                },  
+	                Stock: {
+	     	    		selector:'#idStock',      
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese stock'    
+	                        },
+	                        regexp: {    
+	                            regexp: /^[0-9]{1,2}$/,    
+	                            message: 'Campo stock hasta dos cifras'    
+	                        },   
+	                    }    
+	                },
+	                precio: {
+	     	    		selector:'#idPrecio',      
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese precio'    
+	                        },
+	                        regexp: {    
+	                            regexp: /^(\d+|[0-9]+\.\d{1,2})$/,    
+	                            message: 'Campo precio real hasta dos decimales'    
+	                        },   
+	                    }    
+	                },       				
+	                Fecha: {
+	     	    		selector:'#usr1',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Seleccione fecha '    
+	                        },
+	                        date: {
+	                            format: 'YYYY-MM-DD',
+	                            message: 'The format is dd/mm/yyyy'
+	                        },
+	                    }    
+	                },
+	                Tipo: {
+	     	    		selector:'#idTipo',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Seleccione tipo medicamento'    
+	                        },					
+	                    }    
+	                } 
+	        	 }
+	        })					
+	    });    
+	</script>   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</body>
+</html>

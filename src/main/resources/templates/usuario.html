@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head th:insert="~{plantilla/UITemplate :: cabecera}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Intranet</title>
+</head>
+
+<body>
+
+	<div th:insert="~{plantilla/UITemplate :: menu}"></div>
+
+
+	<div class="container">
+		<h3 class="text-center mt-4">Lista de Usuarios</h3>
+		<a type="button" class="btn btn-primary my-3 btn-editar" id="btn-nuevo" th:href="@{/usuario/agregar}">
+			<i class="far fa-file"></i> Nuevo usuario
+		</a>
+		<div class="mt-2">
+			<table class="table table-borderless" id="tableMedicamentos">
+				<thead class="menu-table">
+					<tr>
+						<th class="text-center">Código</th>
+						<th>Nombres</th>
+						<th>Apellidos</th>
+						<th>Dni</th>
+						<th>Correo</th>
+						<th>Rol</th>
+						<th>Login</th>
+						<th class="text-center">Acciones</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="data:${listaUsuarios}">
+						<td class="text-center" th:text="${data.idUsuario}"></td>
+						<td th:text="${data.nombre}"></td>
+						<td th:text="${data.apellido}"></td>
+						<td th:text="${data.dni}"></td>
+						<td th:text="${data.correoElectronico}"></td>
+						<td th:text="${data.rol.descripcion}"></td>
+						<td th:text="${data.login}"></td>
+						<td class="text-center"><a class="btn btn-info btn-sm btn-editar me-3"
+								th:href="@{/usuario/editar/}+${data.idUsuario}"><i class="far fa-edit fa-sm"></i></a><a
+								class="btn btn-danger btn-sm btn-eliminar"
+								th:href="@{/usuario/eliminar/}+${data.idUsuario}"><i
+									class="far fa-trash-alt fa-sm"></i></a></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div id="myModal" class="modal">
+		<div class="modal-dialog modal-dialog-centered modal-login modal-lg">
+			<div class="modal-content shadow">
+				<div class="modal-header bg-body-secondary">
+					<h5 class="modal-title">Administrar cursos</h5>
+				</div>
+				<div class="modal-body">
+					<!-- Aquí se mostrará el contenido de la ruta -->
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div th:insert="~{plantilla/UITemplate :: javascript}"></div>
+
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj =/*[[${MENSAJE}]]*/
+			toastr.options = {
+				"positionClass": "toast-bottom-right",
+				"onclick": null,
+			}
+		toastr.success(msj);
+
+
+	</script>
+
+
+	<script>
+		$(document).ready(function () {
+			$('.btn-editar').click(function (event) {
+				event.preventDefault(); // Evitar que el enlace se abra en una nueva página
+
+				var url = $(this).attr('href'); // Obtener la URL del enlace
+
+
+				// Realizar una solicitud AJAX para obtener el contenido de la ruta
+				$.get(url, function (data) {
+					// Actualizar el contenido del modal con la respuesta
+					$('#myModal .modal-body').html(data);
+
+					// Mostrar el modal
+					$('#myModal').show();
+				});
+
+			});
+		});
+
+
+		$(document).ready(function () {
+			$('.btn-eliminar').click(function (event) {
+				event.preventDefault(); // Evitar que el enlace se abra en una nueva página
+
+				var nombreUsu = $(this).parents("tr").find("td")[1].innerHTML; // Obtener el nombre del curso de la segunda columna
+				var urlEliminar = $(this).attr('href');
+
+				alertify.confirm('¿Estás seguro de eliminar el curso "' + nombreUsu + '"?',
+					function () { // Confirmado
+						window.location.href = urlEliminar;
+					},
+					function () { // Cancelado
+						alertify.error('Cancelado!');
+					}
+				).set('labels', {ok: 'Si', cancel: 'No'}).show();
+			});
+		});
+	</script>
+</body>
+
+</html>

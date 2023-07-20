@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="plantilla/UITemplate :: cabecera">
+
+<meta charset="ISO-8859-1">
+<title>Reporte</title>
+<link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+<link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+</head>
+<body>
+	
+	<div th:insert="plantilla/UITemplate :: menu"></div>
+	
+	<div class="container">
+		<div class="row">
+		<div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Producto</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#" data-toggle="modal" data-target="#modalProducto">Ver Reporte</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+		<div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Empleado</div>
+                                    
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#" data-toggle="modal" data-target="#modalEmpleado">Ver Reporte</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Usuario</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#" data-toggle="modal" data-target="#modalUusario">Ver Reporte</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Cliente</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#" data-toggle="modal" data-target="#modalCliente">Ver Reporte</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+	</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	<!--Inicio de modal de producto-->
+	<div class="modal fade" id="modalUusario" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Usuario</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra">	
+										<div class="container">
+											<div class="row">
+												<table id="tableUsuario" class="display nowrap" style="width:100%">
+											        <thead>
+											            <tr>
+											                <th>Código</th>
+															<th>Nombres</th>
+															<th>Apellidos</th>
+															<th>Dni</th>
+															<th>Correo</th>
+															<th>Rol</th>
+															<th>Login</th>
+											            </tr>
+											        </thead>
+											        <tbody>
+												            <tr th:each="data:${listaUsuarios}">
+																<td class="text-center" th:text="${data.idUsuario}"></td>
+																<td th:text="${data.nombre}"></td>
+																<td th:text="${data.apellido}"></td>
+																<td th:text="${data.dni}"></td>
+																<td th:text="${data.correoElectronico}"></td>
+																<td th:text="${data.rol.descripcion}"></td>
+																<td th:text="${data.login}"></td>
+																
+															</tr>
+											        </tbody>
+											        
+											    </table>
+											</div>
+										</div>
+										<div class="col-md-12 text-center mt-4"> 										
+											
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 
+									</form>
+								</div>
+							</div>
+						</div>
+	</div>
+	
+	<!--Inicio de modal de empleado-->
+	<div class="modal fade" id="modalEmpleado" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Empleado</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra">	
+										<div class="container">
+											<div class="row">
+												<table id="tableEmpleado" class="display nowrap" style="width:100%">
+											        <thead>
+											            <tr>
+											                <th>Código</th>
+											                <th>Apellidos</th>
+											                <th>Nombres</th>
+															<th>Dni</th>
+															<th>Registro</th>
+															<th>Teléfono</th>
+															<th>Rol</th>
+											            </tr>
+											        </thead>
+											        <tbody>
+											            <tr th:each="data:${listaEmpleado}">
+															<td th:text="${data.codigo}"></td>
+															<td th:text="${data.apellido}"></td>
+															<td th:text="${data.nombre}"></td>
+															<td th:text="${data.dni}"></td>
+															<td th:text="${data.fecha}"></td>
+															<td th:text="${data.telf}"></td>
+															<td th:text="${data.rol.descripcion}"></td>
+															
+														</tr>  
+											            
+											        </tbody>
+											        
+											    </table>
+											</div>
+										</div>
+										<div class="col-md-12 text-center mt-4"> 										
+											
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 
+									</form>
+								</div>
+							</div>
+						</div>
+	</div>
+	
+	
+	<!--Inicio de modal de empleado-->
+	<div class="modal fade" id="modalProducto" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Producto</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra">	
+										<div class="container">
+											<div class="row">
+												<table id="tableProducto" class="display nowrap" style="width:100%">
+											        <thead>
+											            <tr>
+											                <th>Código</th>
+											                <th>Descripción</th>
+															<th>Precio</th>
+															<th>Stock</th>
+															<th>Categoria</th>
+											            </tr>
+											        </thead>
+											        <tbody>
+											            <tr th:each="data:${listaProducto}">
+															<td th:text="${data.codigo}"></td>
+															<td th:text="${data.descripcion}"></td>
+															<td th:text="${data.pre_pro}"></td>
+															<td th:text="${data.stock}"></td>
+															<td th:text="${data.catagoriaP.des_cat}"></td>
+														</tr>  
+											            
+											        </tbody>
+											        
+											    </table>
+											</div>
+										</div>
+										<div class="col-md-12 text-center mt-4"> 										
+											
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 
+									</form>
+								</div>
+							</div>
+						</div>
+	</div>
+	
+	
+	
+	<!--Inicio de modal de producto-->
+	<div class="modal fade" id="modalCliente" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Cliente</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra">	
+										<div class="container">
+											<div class="row">
+												<table id="tableCliente" class="display nowrap" style="width:100%">
+											        <thead>
+											            <tr>
+											                <th>Código</th>
+											                <th>Mombre</th>
+											                <th>Paterno</th>
+											                <th>Materno</th>
+											                <th>Sexo</th>
+											                <th>Dni</th>
+											                <th>Nacimiento</th>
+											                <th>Teléfono</th>
+															<th>Dirección</th>
+															<th>Correo</th>
+											            </tr>
+											        </thead>
+											        <tbody>
+												            <tr th:each="data:${listaCliente}">
+																<td th:text="${data.codigo}"></td>
+																<td th:text="${data.nombre}"></td>
+																<td th:text="${data.paterno}"></td>
+																<td th:text="${data.materno}"></td>
+																<td th:text="${data.sexo}"></td>
+																<td th:text="${data.dni}"></td>
+																<td th:text="${data.fechaNacimiento}"></td>
+																<td th:text="${data.celular}"></td>
+																<td th:text="${data.direccion}"></td>
+																<td th:text="${data.correo}"></td>
+																
+															</tr>  
+											        </tbody>
+											        
+											    </table>
+											</div>
+										</div>
+										<div class="col-md-12 text-center mt-4"> 										
+											
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 
+									</form>
+								</div>
+							</div>
+						</div>
+	</div>
+	
+						
+						
+						<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+						<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+						<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+						<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+						<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+						<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+						<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+						<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+						
+						
+						<script>
+							
+							$(document).ready(function() {
+							    $('#tableUsuario').DataTable( {
+							        dom: 'Bfrtip',
+							        buttons: [
+							            'copy', 'csv', 'excel', 'pdf', 'print'
+							        ]
+							    } );
+							} );
+							
+							
+							
+							$(document).ready(function() {
+							    $('#tableEmpleado').DataTable( {
+							        dom: 'Bfrtip',
+							        buttons: [
+							            'copy', 'csv', 'excel', 'pdf', 'print'
+							        ]
+							    } );
+							} );
+							
+							
+							
+							$(document).ready(function() {
+							    $('#tableProducto').DataTable( {
+							        dom: 'Bfrtip',
+							        buttons: [
+							            'copy', 'csv', 'excel', 'pdf', 'print'
+							        ]
+							    } );
+							} );
+							
+							
+							
+							$(document).ready(function() {
+							    $('#tableCliente').DataTable( {
+							        dom: 'Bfrtip',
+							        buttons: [
+							            'copy', 'csv', 'excel', 'pdf', 'print'
+							        ]
+							    } );
+							} );
+						</script>
+	<!--Fin de modal de producto-->
+	
+	
+	
+	
+	
+	
+	
+	
+	<div th:insert="plantilla/UITemplate :: javascript"></div>
+	
+</body>
+</html>

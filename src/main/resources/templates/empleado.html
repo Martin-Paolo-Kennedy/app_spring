@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="plantilla/UITemplate :: cabecera">
+<meta charset="ISO-8859-1">
+<title>Empleado</title>
+
+
+</head>
+<body>
+	<!--consumir fragmento-->
+	<div th:insert="plantilla/UITemplate :: menu"></div>
+	
+	<div class="container">
+		
+			<h3 class="text-center mt-4">LISTA DE EMPLEADOS</h3>
+			
+			<button type="button" class="btn btn-primary mt-5" data-toggle="modal" data-target="#modalEmpleado" id="btn-nuevo">
+			 <i class="far fa-file"></i> Nuevo Empleado
+			</button>
+			<div class=" mt-2">
+				
+				
+				
+				
+				
+				
+				
+				
+				
+	<table id="tableEmpleados" class="table table-borderless" style="width:100%">
+        <thead class="menu-table">
+            <tr>
+                <th>Código</th>
+                <th>Apellidos</th>
+                <th>Nombres</th>
+				<th>Dni</th>
+				<th>Registro</th>
+				<th>Teléfono</th>
+				<th>Rol</th>
+				<th></th>
+				<th></th>
+					                
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="data:${listaEmpleado}">
+				<td th:text="${data.codigo}"></td>
+				<td th:text="${data.apellido}"></td>
+				<td th:text="${data.nombre}"></td>
+				<td th:text="${data.dni}"></td>
+				<td th:text="${data.fecha}"></td>
+				<td th:text="${data.telf}"></td>
+				<td th:text="${data.rol.descripcion}"></td>
+				<td><a class="btn btn-info btn-editar" data-toggle="modal" data-target="#modalEmpleado"><i class="far fa-edit"></i></a></td>
+				<td><a class="btn btn-danger btn-eliminar"><i class="far fa-trash-alt"></i></a></td>
+			</tr>  
+            
+        </tbody>
+    </table>
+				
+			</div>
+		
+		
+			<!-- begin #modal-dialog : MODAL MEDICAMENTO-->
+			<div class="modal fade" id="modalEmpleado" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">Empleado</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra" action="/empleado/grabar">	
+										<div class="container">
+											<div class="row">
+												<div class="form-group col-md-4">
+												    <label for="validationCustomUsername" class="form-label fw-bold">Código</label>
+												    <div class="input-group has-validation">
+												      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+												      <input type="text" class="form-control" name="codigo" id="idCodigo" readonly value="0">
+												    </div>
+												  </div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Apellidos</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idApellido" placeholder="Ingresar apellido" name="apellido">	
+												</div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Nombres</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="text" class="form-control" id="idNombre" placeholder="Ingresar nombre" name="nombre">	
+												</div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Dni</b></label><br>	
+													<i class="fas fa-pen-fancy form-control-feedback2"></i>
+													<input type="number" class="form-control" id="idDni" placeholder="Ingresar dni" name="dni">	
+												</div>
+												<div class="form-group col-md-4">
+												    <label for="validationCustomUsername" class="form-label fw-bold">Fecha Registro</label>
+												    <div class="input-group has-validation">
+												      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-calendar-date"></i></span>
+												      <i class="fas fa-calendar-week form-control-feedback2"></i>
+																				    <input type="date" style="background-color:#aed6f1" class="form-control" id="usr1"
+																				    													  name="fecha" placeholder="YYYY-MM-DD" >
+															
+												    </div>
+												  </div>
+												<div class="form-group has-feedback col-md-4">
+													<label for="exampleInputEmail1"><b>Teléfono</b></label><br>
+													<i class="fas fa-money-check-alt form-control-feedback2"></i>
+													<input type="number" class="form-control" id="idTelefono" placeholder="Ingresar telefono" name="telefono">														
+												</div>
+											    <div class="form-group has-feedback col-md-6">	
+														<label for="exampleInputEmail1"><b>Rol</b></label><br>
+												        <i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+													    <select class="form-control" id="idRol" name="rol">
+													      <option value=" ">[Seleccione Rol]</option>
+													      <option th:each="row:${listaRol}"
+													      				th:utext="${row.descripcion}"
+													      				th:value="${row.codigo}"
+													      				/>
+													    </select>
+													   
+												 </div> 
+											</div>
+										</div>								
+										<div class="col-md-12 text-center mt-4"> 										
+											<button type="submit" id="Guardar" class="btn btn-primary"><i class="fas fa-save"></i> Registrar</button>
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 																								
+									</form>
+								</div>
+							</div>
+						</div>
+		</div>
+		
+		
+		
+		
+		
+		<!-- FIN Modal MEDICAMENTO-->	
+		<form action="/empleado/eliminar" method="post" id="frm-eliminar">
+			<input type="hidden" name="codigo" id="codigo-eliminar"/>
+			
+		</form>
+	
+	</div>
+	
+	<div th:insert="plantilla/UITemplate :: javascript"></div>
+	
+	
+	
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj=/*[[${MENSAJE}]]*/
+		toastr.success(msj, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+
+		
+	</script>
+	
+	
+	
+	<script>
+		let codigoTipo=-1;
+		new DataTable('#tableEmpleados');
+		$('#usr1').on('changeDate show', function(e) {
+		    $('#idRegistra').bootstrapValidator('revalidateField', $('#usr1'));
+		});
+
+	$(document).on("click",".btn-editar",function(){
+		let cod;
+		cod=$(this).parents("tr").find("td")[0].innerHTML;
+		$.get("/empleado/buscar?codigo="+cod,function(response){
+			//mostrar en los controles los valores de la response
+			$("#idCodigo").val(response.codigo);
+			$("#idApellido").val(response.apellido);
+			$("#idNombre").val(response.nombre);
+			$("#idDni").val(response.dni);
+			$("#idTelefono").val(response.telf);
+			$("#usr1").val(response.fecha);
+			$("#idRol").val(response.rol.codigo);
+			/*codigoTipo=response.categoria.ide_cat;
+			//invocar al evento change del combo idLaboratorio
+			$("#idCategoria").trigger("change");*/
+			console.log(response);
+		})
+		
+	})
+	//asignar evento click al botón con ID "btn-cerrar"
+	$(document).on("click","#btn-cerrar",function(){
+		//resetear el formulario
+		$("#idRegistra").trigger("reset");
+		$("#idCodigo").val(0);
+		//resetear validaciones
+		$("#idRegistra").data("bootstrapValidator").resetForm(true);
+		
+	})
+
+	//asignar evento click a todos los botones con nombre de clase "btn-eliminar"
+	$(document).on("click",".btn-eliminar",function(){
+		//variable
+		let cod;
+		//obtener el código del medicamento según el botón editar que se pulsó
+		cod=$(this).parents("tr").find("td")[0].innerHTML;
+		$("#codigo-eliminar").val(cod);
+		
+		  alertify.confirm("SISTEMA","Seguro de eliminar!",
+		  function(){//siiiiiiiiiiiiiiiii
+				$("#frm-eliminar").submit();
+		  },
+		  function(){//nooooooooooooooooooooo 
+			alertify.error('Cancelado!')
+		  }).
+		  set('labels', {ok:'Si', cancel:'No'});
+	})
+
+	
+
+	</script>
+	
+	<script type="text/javascript">    
+	    $(document).ready(function(){     
+	
+	        $('#idRegistra').bootstrapValidator({     
+	        	feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	        	 fields:{
+	        		 
+	        		 Nombres: {
+	     	    		selector:'#idNombre',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese nombre'    
+	                        },
+	                        regexp: {
+	                            regexp: /^[a-zA-Z ]{3,45}$/,
+	                            message: 'Ingresar solo letras min 3 a 45'
+	                        }      
+	                    }    
+	                },   
+	                apellido: {
+	     	    		selector:'#idApellido',       
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese apellido'    
+	                        },
+	                        regexp: {
+	                            regexp: /^[a-zA-Z ]{3,45}$/,
+	                            message: 'Ingresar solo letras min 3 a 45'
+	                        }  
+	                    }    
+	                },    
+	                dni: {
+	     	    		selector:'#idDni',      
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese dni'    
+	                        },
+		                        regexp: {
+		                            regexp: /^[0-9]{8}$/,
+		                            message: 'Campo dni solo permite numeros de 8 digitos'
+		                        }   
+	                    }    
+	                },
+	                telefono: {
+	     	    		selector:'#idTelefono',      
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese telefono'    
+	                        },
+	                        regexp: {    
+	                            regexp: /^[0-9]{9}$/, 
+	                            message: 'Campo telefono solo permite 9 digitos'    
+	                        },   
+	                    }    
+	                },       				
+	                Fecha: {
+	     	    		selector:'#usr1',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Seleccione fecha '    
+	                        },
+	                        date: {
+	                            format: 'YYYY-MM-DD',
+	                            message: 'The format is dd/mm/yyyy'
+	                        },
+	                    }    
+	                },
+	                Tipo: {
+	     	    		selector:'#idTipo',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Seleccione tipo medicamento'    
+	                        },					
+	                    }    
+	                } 
+	        	 }
+	        })					
+	    });    
+	</script>   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</body>
+</html>
